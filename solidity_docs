@@ -1,0 +1,46 @@
+# FAQ & Documentation
+一些给学习以太坊 smart contract 和 solidity 语言的 beginner 的可能会有用的提问记录:
+
+Q1: Why we declare that our solidity version < 0.8.0 ?
+为什么我们在 .sol 合约文件的开头声明了 solidity 版本号 < 0.8.0 ?
+A: Solidity 0.8.0 was still in beta version when this contract is developed.
+当时开发的时候还是测试版本
+
+Q2: 以太坊的合约地址是如何计算出来的 ?
+A: 以太坊合约的地址是根据创建者（sender）的地址以及创建者发送过的交易数量（nonce）来计算确定的。 sender 和 nonce 进行 RLP 编码，然后用 Keccak-256 进行 hash 计算。
+The address of the Ethereum Contract is determined by the sender's address and the transaction nounce.
+
+Q3: 部分智能合约中重要的全局变量。
+A: 
+```this``` //在合约中 this 表示合约地址的引用; 
+```this.balance``` //表示合约的余额，一般在合约的生命周期要结束的时候，把合约里的余额发送给合约所有者
+```msg``` //
+```msg.sender``` //表示发送者的地址
+```tx.origin``` //表示交易的原始发送者的地址
+
+>>为了解释清晰，这里需要特别阐述的是
+>>************************************************
+>>*   __              __                 __      *
+>>*  |__|    -->     |__|      -->      |__|     *
+>>*  User         contract 1         contract 2  *
+>>*                                              *
+>>************************************************
+>>在上图中，User 向 Contract 1 发送了一条消息（可能是一笔交易），在代码层面的体现是在模拟 User 行为的代码中调用了 Contract 1 中提供的功能， 同时 Contract 1 也向 Contract 2 发送了消>>息 （在代码层面的体现是在 Contract 1 的代码中调用 Contract 2 中提供的功能). 通常来说 ```msg``` 表示用户发送给合约的消息，那么 ```msg.sender``` 就是 User 的地址.
+>>但请注意，在上图的出现多个合约调用的情况下，如果 ```msg.sender``` 写在 contract 1 的代码中，表示的才是 User 的地址；如果 ```msg.sender``` 写在 contract 2 的代码中，表示的是 >>contract 1 的地址. 在这种情况下，想要在 contract 2 中表示 User 地址，需要使用 ```tx.origin```.
+
+
+DHM Note:
+关于 DHM 项目的开发笔记:
+Our clients' address of ordinary account and stake account are identical in a blockchain.
+用户的 balance 账户地址和 stake 账户地址是相同的。
+
+test case
+chai:
+expect
+assert
+
+npx hardhat -network localh 配置在本地运行
+
+connnect(other1). - 将签名other1
+
+testcase  用 erc20 接口
